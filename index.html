@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<title>구름 위 꿈의 섬</title>
+<meta name="theme-color" content="#b8a2ff">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="꿈의 섬">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Jua&family=Silkscreen:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div id="app">
+  <div id="view">
+    <canvas id="cv"></canvas>
+    <div id="hud">
+      <div class="hrow">
+        <div class="cur" id="curGold"><img data-icon="shard" alt=""><b class="num" id="gold">0</b></div>
+        <div class="cur" id="curDust"><img data-icon="dust" alt=""><b class="num" id="dust">0</b></div>
+        <div class="sp"></div>
+        <button class="hb" id="bQuest" aria-label="퀘스트와 업적"><img data-icon="quest" alt=""><i class="dot" id="qdot"></i></button>
+        <button class="hb num" id="bSpeed" aria-label="2배속">1x</button>
+        <button class="hb" id="bMute" aria-label="소리 켜기/끄기"><img data-icon="snd" alt="" id="muteIc"></button>
+      </div>
+      <div id="stageInfo"><span id="regionName">노을 하늘</span><b class="num" id="stageNum">1</b></div>
+      <div id="waveInfo"></div>
+      <div id="bossBar" hidden>
+        <div class="bn"><span id="bossName"></span><span class="num" id="bossTime">30</span></div>
+        <div class="bar"><i id="bossHp"></i></div>
+      </div>
+    </div>
+    <div id="farmTag" hidden><span>반복 성장 중</span><button class="mini" id="bAutoCh">자동 도전 ON</button></div>
+    <div id="toasts"></div>
+    <button id="bChallenge" hidden>보스 도전!<small id="chSub">다음 스테이지</small></button>
+  </div>
+  <div id="skillbar">
+    <button id="bAuto">자동<small>스킬</small></button>
+  </div>
+  <div id="panel"></div>
+  <nav id="tabs">
+    <button data-tab="up" class="on"><img data-icon="atk" alt="">강화</button>
+    <button data-tab="sk"><img data-icon="meteor" alt="">스킬</button>
+    <button data-tab="eq"><img data-icon="bow" alt="">장비<i class="dot" id="eqdot"></i></button>
+    <button data-tab="co"><img data-icon="whale" alt="">동료</button>
+    <button data-tab="pr"><img data-icon="sun" alt="">환생<i class="dot" id="prdot"></i></button>
+  </nav>
+  <div id="title" class="ov">
+    <h1><span>구름 위</span>꿈의 섬</h1>
+    <div class="sub">별빛 등대를 악몽 구름에게서 지켜 주세요</div>
+    <div class="btns">
+      <button class="tbtn" id="bStart">꿈 속으로</button>
+      <button class="ibtn" id="bInstall" hidden>앱으로 설치하기</button>
+      <div class="ihint" id="iosHint" hidden>Safari 아래쪽 공유 버튼 → <b>홈 화면에 추가</b>로 앱처럼 설치할 수 있어요</div>
+      <div class="blink" id="startHint">화면을 탭하면 별빛 화살이 나가요</div>
+    </div>
+  </div>
+  <div id="modal" class="ov" hidden><div class="mbox" id="mbox"></div></div>
+</div>
+<!-- 공용 도구 -->
+<script src="js/core/util.js"></script>
+<!-- 게임 데이터 (수치·목록) — 밸런스 수정은 여기 -->
+<script src="js/data/balance.js"></script>
+<script src="js/data/regions.js"></script>
+<script src="js/data/enemies.js"></script>
+<script src="js/data/upgrades.js"></script>
+<script src="js/data/skills.js"></script>
+<script src="js/data/companions.js"></script>
+<script src="js/data/equipment.js"></script>
+<script src="js/data/prestige.js"></script>
+<script src="js/data/quests.js"></script>
+<script src="js/data/achievements.js"></script>
+<!-- 픽셀아트 -->
+<script src="js/art/sprites.js"></script>
+<script src="js/art/icons.js"></script>
+<!-- 사운드 -->
+<script src="js/audio/audio.js"></script>
+<!-- 게임 시스템 -->
+<script src="js/systems/state.js"></script>
+<script src="js/systems/world.js"></script>
+<script src="js/systems/fx.js"></script>
+<script src="js/systems/items.js"></script>
+<script src="js/systems/combat.js"></script>
+<script src="js/systems/skills.js"></script>
+<script src="js/systems/boss.js"></script>
+<script src="js/systems/waves.js"></script>
+<script src="js/systems/prestige.js"></script>
+<script src="js/systems/quests.js"></script>
+<script src="js/systems/update.js"></script>
+<!-- 그리기 -->
+<script src="js/render/render.js"></script>
+<!-- 화면 UI -->
+<script src="js/ui/common.js"></script>
+<script src="js/ui/hud.js"></script>
+<script src="js/ui/panel.js"></script>
+<script src="js/ui/modals.js"></script>
+<!-- 시작 -->
+<script src="js/main.js"></script>
+<script src="js/pwa.js"></script>
+</body>
+</html>
