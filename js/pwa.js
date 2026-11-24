@@ -7,6 +7,17 @@
   if (web && 'serviceWorker' in navigator) {
     window.addEventListener('load', () => { navigator.serviceWorker.register('sw.js').catch(() => {}); });
   }
+  // 아이폰 홈 화면 앱: 화면 맨 위(상태 표시줄)가 게임 위로 겹쳐 뿌옇게 보이지 않도록 띠를 확보해요.
+  // 보통은 CSS 의 env(safe-area-inset-top) 이 처리하지만, 다른 페이지 안에 들어가 실행될 때는 0 으로 나와서 직접 정해요.
+  const iosDev = /iphone|ipod/i.test(navigator.userAgent);
+  if (iosDev && standalone()) {
+    const probe = document.createElement('div'); probe.style.cssText = 'position:fixed;top:0;height:env(safe-area-inset-top);visibility:hidden';
+    document.body.appendChild(probe); const inset = probe.getBoundingClientRect().height; probe.remove();
+    if (inset < 1) {
+      document.documentElement.style.setProperty('--safe-top', (Math.max(screen.width, screen.height) >= 812 ? 50 : 20) + 'px');
+      window.dispatchEvent(new Event('resize'));
+    }
+  }
   if (standalone()) return;
   const btn = document.getElementById('bInstall'), hint = document.getElementById('iosHint');
   let deferred = null;

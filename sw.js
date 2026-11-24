@@ -1,6 +1,6 @@
 // 오프라인 플레이용 캐시. 인터넷이 되면 항상 최신 파일을 받아 오고, 안 되면 저장해 둔 파일로 실행해요.
 // 새 파일을 추가하면 아래 목록에도 한 줄 넣어 주세요 (빠뜨려도 한 번 온라인으로 열면 자동 저장돼요).
-const CACHE = 'dream-isle-v1';
+const CACHE = 'dream-isle-v2';
 const ASSETS = [
   "./",
   "./css/style.css",

@@ -6,7 +6,10 @@ let BG = { c: null, pal: null, clouds: [], stars: [], sea: null };
 function resize() {
   const r = cv.parentElement.getBoundingClientRect();
   DPR = Math.min(3, window.devicePixelRatio || 1); CW = Math.max(1, r.width); CH = Math.max(1, r.height);
+  // 캔버스 픽셀이 화면 픽셀과 정확히 맞도록 정수 크기로 맞춰요 (Safari 흐림 방지)
+  CW = Math.floor(CW); CH = Math.floor(CH);
   cv.width = Math.round(CW * DPR); cv.height = Math.round(CH * DPR);
+  cv.style.width = CW + 'px'; cv.style.height = CH + 'px';
   SC = CW / W; G.H = CH / SC;
   G.islandTop = Math.round(G.H - 74);
   const hud = (G.boss ? 128 : 104) / SC;
@@ -25,6 +28,9 @@ function buildBg() {
   const r = regionOf(S.stage), base = RPAL[r.idx], hs = r.cycle * 55;
   const P = { sky: base.sky.map(c => hue(c, hs)), cl: base.cl.map(c => hue(c, hs)), sea: base.sea.map(c => hue(c, hs)), deco: base.deco, stars: base.stars, idx: r.idx };
   BG.pal = P;
+  // 아이폰 상태 표시줄 영역을 지금 하늘 색으로 칠해요 (홈 화면 앱에서 위쪽이 뿌옇게 보이는 현상 방지)
+  document.documentElement.style.setProperty('--topband', P.sky[0]);
+  const tc = document.querySelector('meta[name=theme-color]'); if (tc) tc.setAttribute('content', P.sky[0]);
   const lw = 90, lh = Math.ceil(G.H / 4) + 1, c = mk(lw, lh), x = c.getContext('2d');
   const toRgb = h => [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16));
   const [a, b, d] = P.sky.map(toRgb);
